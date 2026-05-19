@@ -1,6 +1,7 @@
+import { FiltereValuesType } from "./App"
 import { Button } from "./Button"
 
-export type TodoItem = {
+export type TaskItemType = {
     id: number
     title: string
     isDone: boolean
@@ -8,19 +9,23 @@ export type TodoItem = {
 
 type PropsType = {
     title: string
-    todos: TodoItem[]
+    todos: TaskItemType[]
+    deleteTask: (taskId: TaskItemType['id'])=> void
+    changeTodoListFilter: (filterValue: FiltereValuesType)=> void
 }
 
-export function Todolist(props: PropsType) {
+export function Todolist({title, todos, deleteTask, changeTodoListFilter}: PropsType) {
 
-    const taskList = props.todos.length === 0 
+    const taskList = todos.length === 0 
     ? <span> your tasks list is empty</span> :
     <ul>
         {
-            props.todos.map((el)=> {
+            todos.map((el)=> {
                 return (
-                    <li>
-                        <input type="checkbox" key={el.id} checked={el.isDone} /> <span>{el.title}</span>
+                    <li key={el.id}>
+                        <input type="checkbox" key={el.id} defaultChecked={el.isDone} /> 
+                        <span style={{marginRight: '15px'}}>{el.title}</span>
+                        <Button title="X" onClick={()=> deleteTask(el.id)}/>
                     </li>
                 )
             })
@@ -29,16 +34,16 @@ export function Todolist(props: PropsType) {
 
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>{title}</h3>
             <div>
                 <input />
                 <Button title="+"/>
             </div>
             {taskList}
             <div>
-                <Button title="All"/>
-                <Button title="Active"/>
-                <Button title="Complited"/>
+                <Button title="All" onClick={()=>changeTodoListFilter('all')}/>
+                <Button title="Active" onClick={()=>changeTodoListFilter('active')}/>
+                <Button title="Complited" onClick={()=>changeTodoListFilter('complited')}/>
             </div>
         </div>
     )

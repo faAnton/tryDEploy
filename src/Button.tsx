@@ -1,9 +1,10 @@
 
 type PropsType = {
     title: string
+    onClick?: ()=>void
 }
 
 
-export function Button({title}: PropsType) {
-    return <button>{title}</button> 
+export function Button({title, onClick}: PropsType) {
+    return <button onClick={onClick}>{title}</button> 
 }
